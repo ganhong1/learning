@@ -25,4 +25,6 @@ public interface DishService {
      * @return
      */
     List<DishVO> listWithFlavor(Dish dish);
+
+    void updateDishStatusById(Integer status, Long id);
 }

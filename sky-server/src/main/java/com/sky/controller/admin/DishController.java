@@ -6,9 +6,11 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.utils.RedisUtil;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +22,25 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @PostMapping
     public Result save (@RequestBody DishDTO dishDTO){
         log.info("新增菜品:{}", dishDTO);
         dishService.saveWithFlavor(dishDTO);
+        redisUtil.accurateDeleteRedisDataByCateId(dishDTO.getCategoryId());
+        return Result.success();
+    }
+
+    @PostMapping("/status/{status}")
+    public Result updateDishStatusById(@PathVariable("status") Integer status,
+                               @RequestParam Long id){
+        log.info("激活菜品修改,把id为:{}的菜品的状态修改为:{}", id, status);
+        redisUtil.DeleteAllRedisData("dish_*");
+        dishService.updateDishStatusById(status,id);
         return Result.success();
     }
 
@@ -38,6 +54,7 @@ public class DishController {
     @DeleteMapping
     public Result delete (@RequestParam List<Long> ids){
         log.info("激活菜品批量删除:{}",ids);
+        redisUtil.DeleteAllRedisData("dish_*");
         dishService.deleteBatch(ids);
         return Result.success();
     }
@@ -52,6 +69,7 @@ public class DishController {
     @PutMapping
     public Result update (@RequestBody DishDTO dishDTO){
         log.info("激活修改菜品,修改后数据为:{}", dishDTO);
+        redisUtil.DeleteAllRedisData("dish_*");
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
