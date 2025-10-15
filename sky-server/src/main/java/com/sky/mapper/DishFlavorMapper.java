@@ -13,7 +13,10 @@ import java.util.List;
 public interface DishFlavorMapper {
 
 
-
+    /**
+     * 批量查询菜品口味信息
+     * @param flavors
+     */
     void insertBatch(List<DishFlavor> flavors);
 
     @Delete("delete from dish_flavor where dish_id=#{dish_id}")
