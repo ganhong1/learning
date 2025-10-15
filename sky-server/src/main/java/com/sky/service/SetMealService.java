@@ -20,6 +20,10 @@ public interface SetMealService {
 
     PageResult searchSetMealByCondition(SetmealPageQueryDTO setmealPageQueryDTO);
 
+    /**
+     * 根据ids批量删除套餐
+     * @param ids
+     */
     void deleteSetMeal(List<Long> ids);
 
     void updateSetMealById(SetmealDTO setmealDTO);
