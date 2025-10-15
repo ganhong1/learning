@@ -30,7 +30,6 @@ public class SetMealController {
  *
  * */
     @PostMapping("/setmeal")
-    @Cacheable(cacheNames = "setmealCache",key="#setmealDTO.categoryId")
     public Result addSetMeal(@RequestBody SetmealDTO setmealDTO) {
         log.info("激活新增套餐,新增信息为:{}", setmealDTO);
         setMealService.addSetMeal(setmealDTO);
