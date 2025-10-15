@@ -17,7 +17,11 @@ public interface SetMealService {
 
     List<DishVO> searchDishByCateId(Integer categoryId);
 
-
+    /**
+     *
+     * @param setmealPageQueryDTO
+     * @return
+     */
     PageResult searchSetMealByCondition(SetmealPageQueryDTO setmealPageQueryDTO);
 
     /**
